@@ -10,6 +10,8 @@ public class Main {
         }
     }
 
+
+
     //读取一个数字
     static Number parseNumber(){
         skipSpaces();
