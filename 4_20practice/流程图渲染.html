@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>表达式解释器流程图 - 已修复</title>
+    <!-- 使用更稳定的 CDN 链接 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px; padding: 20px; }
+        h2 { color: #1a73e8; border-left: 5px solid #1a73e8; padding-left: 10px; }
+        .mermaid { display: flex; justify-content: center; background: #fff; }
+    </style>
+</head>
+<body>
+    <h1>核心算法流程图</h1>
+
+    <div class="card">
+        <h2>1. 主程序逻辑 (main)</h2>
+        <div class="mermaid">
+        flowchart TD
+            Start([开始]) --> Read[读取输入 stat]
+            Read --> IsQuery{是以 '?' 结尾?}
+            IsQuery -- 是 --> Calc[解析并计算表达式]
+            Calc --> Print[输出结果]
+            IsQuery -- 否 --> IsAssign{包含 '='?}
+            IsAssign -- 是 --> HandleAssign[处理赋值/声明初始化]
+            IsAssign -- 否 --> HandleDeclare[处理变量声明]
+            Print --> Read
+            HandleAssign --> Read
+            HandleDeclare --> Read
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>2. 递归下降解析架构</h2>
+        <div class="mermaid">
+        flowchart TB
+            subgraph parseExpr [parseExpr - 加减级]
+                direction TB
+                E1[调用 parseTerm] --> E2{有 + 或 -?}
+                E2 -- 有 --> E3[运算并循环]
+                E2 -- 无 --> E4[返回结果]
+            end
+            subgraph parseTerm [parseTerm - 乘除余级]
+                direction TB
+                T1[调用 parseFactor] --> T2{有 * / %?}
+                T2 -- 有 --> T3[运算并循环]
+                T2 -- 无 --> T4[返回结果]
+            end
+            subgraph parseFactor [parseFactor - 基础单元级]
+                direction TB
+                F1{判断类型}
+                F1 -->|括号| F2[递归 parseExpr]
+                F1 -->|负号| F3[取负并递归]
+                F1 -->|数字| F4[解析数字]
+                F1 -->|变量| F5[查找变量值]
+            end
+            parseExpr --> parseTerm
+            parseTerm --> parseFactor
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>3. 变量赋值与声明逻辑</h2>
+        <div class="mermaid">
+        flowchart TD
+            A[开始处理] --> B{有 '='?}
+            B -- 是 --> C{左边有空格?}
+            C -- 是 --> D[声明+初始化: 检查重复 -> 计算值 -> 存入Map]
+            C -- 否 --> E[仅赋值: 检查定义 -> 计算值 -> 类型转换 -> 更新Map]
+            B -- 否 --> F[仅声明: 检查重复 -> 创建空变量 -> 存入Map]
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'forest',
+            securityLevel: 'loose'
+        });
+    </script>
+</body>
+</html>
