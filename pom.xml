@@ -1,0 +1,62 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XML文件声明：版本1.0，编码UTF-8（防止中文乱码） -->
+
+
+<!-- Maven项目的根标签，固定写法 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Maven模型版本，固定写4.0.0，不用动 -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 👇 这三个是【项目唯一标识】，你自己的项目名，和日志无关 -->
+    <!-- 组织id（公司/个人域名倒写） -->
+    <groupId>org.example</groupId>
+    <!-- 项目模块名 -->
+    <artifactId>StudyLesson2</artifactId>
+    <!-- 项目版本 -->
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- 项目全局配置 -->
+    <properties>
+        <!-- 编译用的JDK版本：21 -->
+        <maven.compiler.source>21</maven.compiler.source>
+        <!-- 运行用的JDK版本：21 -->
+        <maven.compiler.target>21</maven.compiler.target>
+        <!-- 项目编码：UTF-8（必须加，否则中文报错） -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- 👇 核心！项目需要的所有依赖包（jar） -->
+    <dependencies>
+
+        <!-- 1. Lombok工具包 -->
+        <!-- 作用：提供 @Slf4j 注解，自动生成日志对象，简化代码 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version> <!-- 稳定版本 -->
+            <scope>provided</scope> <!-- 只在编译时生效，打包不包含 -->
+        </dependency>
+
+        <!-- 2. SLF4J 日志接口（日志标准规范） -->
+        <!-- 作用：统一所有日志框架的写法，是日志的"标准说明书" -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+
+        <!-- 3. Logback 日志实现（真正干活打印日志的工具） -->
+        <!-- 作用：按照SLF4J的规范，实现日志打印、格式输出、文件记录等功能 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.11</version>
+            <scope>runtime</scope> <!-- 只在运行时生效 -->
+        </dependency>
+
+    </dependencies>
+</project>
